@@ -36,4 +36,10 @@ const createRobot = async (req, res, next) => {
   }
 };
 
-module.exports = { getRobots, getRobotbyId, createRobot };
+const updateRobotById = async (req, res, next) => {
+  const { _id } = req.body;
+  await Robot.findByIdAndUpdate(_id, req.body);
+  res.json(req.body);
+};
+
+module.exports = { getRobots, getRobotbyId, createRobot, updateRobotById };
