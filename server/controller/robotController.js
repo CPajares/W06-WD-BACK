@@ -1,4 +1,3 @@
-const chalk = require("chalk");
 const Robot = require("../../database/models/robot");
 
 const getRobots = async (req, res) => {
