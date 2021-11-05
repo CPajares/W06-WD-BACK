@@ -1,4 +1,4 @@
-const InitializeServer = require("./server/routes");
+const InitializeServer = require("./server/index");
 const initiateDB = require("./database/index");
 require("dotenv").config();
 

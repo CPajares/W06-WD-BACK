@@ -3,6 +3,7 @@ const express = require("express");
 const debug = require("debug")("robots:server");
 const chalk = require("chalk");
 const morgan = require("morgan");
+const robotsRoute = require("./routes/robotRoutes");
 
 const app = express();
 
@@ -21,5 +22,7 @@ app.use((req, res, next) => {
   debug(chalk.yellow("Arrancando motores"));
   next();
 });
+
+app.use("/robots", robotsRoute);
 
 module.exports = InitializeServer;
