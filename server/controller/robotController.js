@@ -1,3 +1,4 @@
+const chalk = require("chalk");
 const Robot = require("../../database/models/robot");
 
 const getRobots = async (req, res) => {
@@ -5,12 +6,35 @@ const getRobots = async (req, res) => {
   res.json(robots);
 };
 
-const getRobotbyId = async (req, res) => {
-  console.log("entra");
+const getRobotbyId = async (req, res, next) => {
   const { idRobot } = req.params;
-  console.log(req.params);
-  const robot = await Robot.findById(idRobot);
-  res.json(robot);
+  try {
+    const robot = await Robot.findById(idRobot);
+    if (robot) {
+      res.json(robot);
+    } else {
+      const error = new Error("Pet not found");
+      error.code = 404;
+      throw error;
+    }
+  } catch (error) {
+    error.code = 400;
+    error.message = "Fail!";
+    next(error);
+  }
 };
 
-module.exports = { getRobots, getRobotbyId };
+const createRobot = async (req, res, next) => {
+  try {
+    const robot = req.body;
+    const newRobot = await Robot.create(robot);
+    console.log(newRobot);
+    res.json(newRobot);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Objeto no válido, espabila!";
+    next(error);
+  }
+};
+
+module.exports = { getRobots, getRobotbyId, createRobot };
