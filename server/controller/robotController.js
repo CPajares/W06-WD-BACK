@@ -5,4 +5,12 @@ const getRobots = async (req, res) => {
   res.json(robots);
 };
 
-module.exports = getRobots;
+const getRobotbyId = async (req, res) => {
+  console.log("entra");
+  const { idRobot } = req.params;
+  console.log(req.params);
+  const robot = await Robot.findById(idRobot);
+  res.json(robot);
+};
+
+module.exports = { getRobots, getRobotbyId };
