@@ -27,7 +27,6 @@ const createRobot = async (req, res, next) => {
   try {
     const robot = req.body;
     const newRobot = await Robot.create(robot);
-    console.log(newRobot);
     res.json(newRobot);
   } catch (error) {
     error.code = 400;
