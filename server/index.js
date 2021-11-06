@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const debug = require("debug")("robots:server");
 const chalk = require("chalk");
 const morgan = require("morgan");
@@ -7,6 +8,8 @@ const robotsRoute = require("./routes/robotRoutes");
 const { notFoundErrorHandler, generalErrorHandler } = require("./errors");
 
 const app = express();
+app.use(cors());
+app.use(express());
 
 const InitializeServer = (port) => {
   const server = app.listen(port, () => {
