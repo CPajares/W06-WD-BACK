@@ -37,9 +37,26 @@ const createRobot = async (req, res, next) => {
 };
 
 const updateRobotById = async (req, res, next) => {
-  const { _id } = req.body;
-  await Robot.findByIdAndUpdate(_id, req.body);
-  res.json(req.body);
+  try {
+    const { _id } = req.body;
+    await Robot.findByIdAndUpdate(_id, req.body, { runValidators: true });
+    res.json(req.body);
+  } catch (error) {
+    error.code = 403;
+    next(error);
+  }
 };
 
-module.exports = { getRobots, getRobotbyId, createRobot, updateRobotById };
+const deleteRobotById = async (req, res, next) => {
+  const { idRobot } = req.params;
+  const robotDeleted = await Robot.findByIdAndDelete(idRobot);
+  res.json(robotDeleted);
+};
+
+module.exports = {
+  getRobots,
+  getRobotbyId,
+  createRobot,
+  updateRobotById,
+  deleteRobotById,
+};
