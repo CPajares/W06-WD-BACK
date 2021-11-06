@@ -42,15 +42,22 @@ const updateRobotById = async (req, res, next) => {
     await Robot.findByIdAndUpdate(_id, req.body, { runValidators: true });
     res.json(req.body);
   } catch (error) {
-    error.code = 403;
+    error.message = "Objeto no válido, espabila!";
+    error.code = 400;
     next(error);
   }
 };
 
 const deleteRobotById = async (req, res, next) => {
-  const { idRobot } = req.params;
-  const robotDeleted = await Robot.findByIdAndDelete(idRobot);
-  res.json(robotDeleted);
+  try {
+    const { idRobot } = req.params;
+    await Robot.findByIdAndDelete(idRobot);
+    res.json({ idRobot });
+  } catch (error) {
+    error.message = "Objeto no válido, espabila!";
+    error.code = 400;
+    next(error);
+  }
 };
 
 module.exports = {
