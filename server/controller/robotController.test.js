@@ -1,5 +1,5 @@
 const Robot = require("../../database/models/robot");
-const { getRobots, getRobotbyId } = require("./robotController");
+const { getRobots, getRobotbyId, createRobot } = require("./robotController");
 
 jest.mock("../../database/models/robot.js");
 
@@ -99,6 +99,30 @@ describe("Given a getRobotId", () => {
       await getRobotbyId(req, res, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+});
+
+describe("Given createRobot function", () => {
+  describe("When it receives an object req", () => {
+    test("Then it should call the method json with object robot", async () => {
+      const robot = {
+        features: {
+          speed: 2,
+          resistence: 3,
+          date: "2021-02-04T23:00:00.000Z",
+        },
+        _id: "618555c6c10e75c0021f6825",
+        name: "Emilio",
+        url: "https://nostalgiapop.es/wp-content/uploads/2020/07/NP_Emiglio-e1608391255576.jpg",
+      };
+      Robot.create = jest.fn().mockResolvedValue(robot);
+      const req = { body: robot };
+      const res = { json: jest.fn() };
+
+      await createRobot(req, res);
+
+      expect(res.json).toHaveBeenCalledWith(robot);
     });
   });
 });
