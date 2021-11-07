@@ -1,5 +1,10 @@
 const Robot = require("../../database/models/robot");
-const { getRobots, getRobotbyId, createRobot } = require("./robotController");
+const {
+  getRobots,
+  getRobotbyId,
+  createRobot,
+  deleteRobotById,
+} = require("./robotController");
 
 jest.mock("../../database/models/robot.js");
 
@@ -70,7 +75,7 @@ describe("Given a getRobotId", () => {
     });
   });
   describe("When it´s called with the objects res, req", () => {
-    test("Then it should callect findbyid method", async () => {
+    test("Then it should called findbyid method", async () => {
       const idRobot = "618555c6c10e75c0021f6825";
 
       Robot.findById = jest.fn().mockResolvedValue(idRobot);
@@ -141,6 +146,44 @@ describe("Given createRobot function", () => {
       await getRobotbyId(req, res, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+});
+
+describe("Given a deleteRobotById function", () => {
+  describe("When it receives a req object", () => {
+    test("Then should call findByIdAndDelete method", async () => {
+      const idRobot = "618555c6c10e75c0021f6825";
+      const req = {
+        params: { idRobot },
+      };
+      const res = {
+        json: jest.fn(),
+      };
+
+      Robot.findByIdAndDelete = jest.fn().mockResolvedValue(idRobot);
+
+      await deleteRobotById(req, res);
+
+      expect(Robot.findByIdAndDelete).toHaveBeenCalledWith(idRobot);
+    });
+  });
+
+  describe("When it receives a req object", () => {
+    test("Then should call findByIdAndDelete method", async () => {
+      const idRobot = "618555c6c10e75c0021f6825";
+      const req = {
+        params: { idRobot },
+      };
+      const res = {
+        json: jest.fn().mockResolvedValue(idRobot),
+      };
+
+      Robot.findByIdAndDelete = jest.fn();
+
+      await deleteRobotById(req, res);
+
+      expect(res.json).toHaveBeenCalled();
     });
   });
 });
