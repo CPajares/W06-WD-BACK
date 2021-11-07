@@ -176,7 +176,7 @@ describe("Given a deleteRobotById function", () => {
         params: { idRobot },
       };
       const res = {
-        json: jest.fn().mockResolvedValue(idRobot),
+        json: jest.fn(),
       };
 
       Robot.findByIdAndDelete = jest.fn();
