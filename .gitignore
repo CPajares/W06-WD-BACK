@@ -104,4 +104,6 @@ dist
 .tern-port
 
 # Scaner files
+
 .scannerwork
+sonar-project.properties
