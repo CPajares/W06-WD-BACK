@@ -169,8 +169,8 @@ describe("Given a deleteRobotById function", () => {
     });
   });
 
-  describe("When it receives a req object", () => {
-    test("Then should call findByIdAndDelete method", async () => {
+  describe("When it receives a req and res objects", () => {
+    test("Then should call json method", async () => {
       const idRobot = "618555c6c10e75c0021f6825";
       const req = {
         params: { idRobot },
