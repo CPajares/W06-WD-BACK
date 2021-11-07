@@ -12,9 +12,9 @@ const getRobotbyId = async (req, res, next) => {
     if (robot) {
       res.json(robot);
     } else {
-      const error = new Error("Pet not found");
+      const error = new Error("Robot not found");
       error.code = 404;
-      throw error;
+      next(error);
     }
   } catch (error) {
     error.code = 400;
@@ -38,8 +38,10 @@ const createRobot = async (req, res, next) => {
 const updateRobotById = async (req, res, next) => {
   try {
     const { _id } = req.body;
-    await Robot.findByIdAndUpdate(_id, req.body, { runValidators: true });
-    res.json(req.body);
+    const newRobot = await Robot.findByIdAndUpdate(_id, req.body, {
+      runValidators: true,
+    });
+    res.json(newRobot);
   } catch (error) {
     error.message = "Objeto no válido, espabila!";
     error.code = 400;

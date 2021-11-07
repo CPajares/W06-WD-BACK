@@ -4,6 +4,7 @@ const {
   getRobotbyId,
   createRobot,
   deleteRobotById,
+  updateRobotById,
 } = require("./robotController");
 
 jest.mock("../../database/models/robot.js");
@@ -50,61 +51,68 @@ describe("Given getRobots function", () => {
 describe("Given a getRobotId", () => {
   describe("When it´s called with the objects res and req", () => {
     test("Then should called the method json of res object", async () => {
-      const idRobot = "618555c6c10e75c0021f6825";
-      const robot = {
-        features: {
-          speed: 2,
-          resistence: 3,
-          date: "2021-02-04T23:00:00.000Z",
-        },
-        idRobot,
-        name: "Emilio",
-        url: "https://nostalgiapop.es/wp-content/uploads/2020/07/NP_Emiglio-e1608391255576.jpg",
-      };
-      Robot.findById = jest.fn().mockResolvedValue(robot);
-      const res = {
-        json: jest.fn(),
-      };
-      const req = {
-        params: { idRobot },
-      };
-
-      await getRobotbyId(req, res);
-
-      expect(res.json).toHaveBeenCalledWith(robot);
-    });
-  });
-  describe("When it´s called with the objects res, req", () => {
-    test("Then it should called findbyid method", async () => {
-      const idRobot = "618555c6c10e75c0021f6825";
-
-      Robot.findById = jest.fn().mockResolvedValue(idRobot);
-      const res = {
-        json: jest.fn(),
-      };
-      const req = {
-        params: { idRobot },
-      };
-
-      await getRobotbyId(req, res);
-
-      expect(Robot.findById).toHaveBeenCalledWith(idRobot);
-    });
-  });
-  describe("When it´s called whit next function and error it´s rejected", () => {
-    test("Then it should call next function with the error object", async () => {
-      const error = {};
-      Robot.findById = jest.fn().mockRejectedValue(error);
+      Robot.findById = jest.fn().mockResolvedValue(null);
       const next = jest.fn();
       const res = {};
       const req = {
         params: {},
       };
 
+      const error = new Error("Robot not found");
       await getRobotbyId(req, res, next);
 
       expect(next).toHaveBeenCalledWith(error);
     });
+  });
+
+  describe("When it´s called with the objects res, req and next function", () => {
+    test("Then should called next function with new Error", async () => {
+      Robot.findById = jest.fn().mockResolvedValue(null);
+      const next = jest.fn();
+      const res = {};
+      const req = {
+        params: {},
+      };
+
+      const error = new Error("Robot not found");
+      await getRobotbyId(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+});
+
+describe("When it´s called with the objects res, req", () => {
+  test("Then it should called findbyid method", async () => {
+    const idRobot = "618555c6c10e75c0021f6825";
+
+    Robot.findById = jest.fn().mockResolvedValue(idRobot);
+    const res = {
+      json: jest.fn(),
+    };
+    const req = {
+      params: { idRobot },
+    };
+
+    await getRobotbyId(req, res);
+
+    expect(Robot.findById).toHaveBeenCalledWith(idRobot);
+  });
+});
+
+describe("When it´s called whit next function and error it´s rejected", () => {
+  test("Then it should call next function with the error object", async () => {
+    const error = {};
+    Robot.findById = jest.fn().mockRejectedValue(error);
+    const next = jest.fn();
+    const res = {};
+    const req = {
+      params: {},
+    };
+
+    await getRobotbyId(req, res, next);
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });
 
@@ -128,6 +136,23 @@ describe("Given createRobot function", () => {
       await createRobot(req, res);
 
       expect(res.json).toHaveBeenCalledWith(robot);
+    });
+    describe("When it receives an object res", () => {
+      test("Then it should call the method json with robots and Robot.find", async () => {
+        const error = {
+          code: 400,
+          message: "Fail!",
+        };
+        const req = { body: "Whatever" };
+        const res = {};
+        const next = jest.fn();
+
+        Robot.create = jest.fn().mockRejectedValue(error);
+
+        await createRobot(req, res, next);
+
+        expect(next).toHaveBeenCalledWith(error);
+      });
     });
   });
 
@@ -184,6 +209,66 @@ describe("Given a deleteRobotById function", () => {
       await deleteRobotById(req, res);
 
       expect(res.json).toHaveBeenCalled();
+    });
+  });
+  describe("When it receives a req object", () => {
+    test("Then it should call the next", async () => {
+      const error = {};
+      Robot.findByIdAndDelete = jest.fn().mockRejectedValue(error);
+      const next = jest.fn();
+      const res = {};
+      const req = {
+        params: {},
+      };
+
+      await deleteRobotById(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+});
+
+describe("Given a updateRobotById function", () => {
+  describe("When it receives a req object", () => {
+    test("Then it should call json method", async () => {
+      const robot = {
+        _id: "618555c6c10e75c0021f6825",
+        name: "Emilio",
+      };
+      const newRobot = {
+        _id: "618555c6c10e75c0021f6825",
+        name: "Emili",
+      };
+      const req = {
+        body: robot,
+      };
+      const res = {
+        json: jest.fn(),
+      };
+      const next = jest.fn();
+
+      Robot.findByIdAndUpdate = jest.fn().mockResolvedValue(newRobot);
+
+      await updateRobotById(req, res, next);
+
+      expect(Robot.findByIdAndUpdate).toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith(newRobot);
+    });
+  });
+
+  describe("When it receives a req object", () => {
+    test("Then it should call the next", async () => {
+      const error = {};
+      Robot.findByIdAndUpdate = jest.fn().mockRejectedValue(error);
+      const next = jest.fn();
+      const res = {};
+      const req = {
+        body: {},
+      };
+
+      await updateRobotById(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
