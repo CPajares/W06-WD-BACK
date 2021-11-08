@@ -5,7 +5,6 @@ const User = require("../../database/models/user");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  console.log("holi");
   await User.create({
     user: "pedro",
     username: "marmol",
