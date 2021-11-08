@@ -5,6 +5,7 @@ const debug = require("debug")("robots:server");
 const chalk = require("chalk");
 const morgan = require("morgan");
 const robotsRoute = require("./routes/robotRoutes");
+const userRoute = require("./routes/userRoutes");
 const { notFoundErrorHandler, generalErrorHandler } = require("./errors");
 
 const app = express();
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/user", userRoute);
 app.use("/robots", robotsRoute);
 
 app.use(notFoundErrorHandler);
