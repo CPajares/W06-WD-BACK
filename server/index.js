@@ -5,7 +5,7 @@ const debug = require("debug")("robots:server");
 const chalk = require("chalk");
 const morgan = require("morgan");
 const robotsRoute = require("./routes/robotRoutes");
-const userRoute = require("./routes/userRoutes");
+const userRoutes = require("./routes/userRoutes");
 const { notFoundErrorHandler, generalErrorHandler } = require("./errors");
 const loginUser = require("./controller/userController");
 const authHeadauthMiddlewareer = require("./middleware/authMiddleware");
@@ -30,9 +30,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/user", userRoute);
+/* app.use("/user", userRoutes); */
 app.use("/robots", robotsRoute);
-app.post("/login", authHeadauthMiddlewareer, loginUser);
+app.post("/login", authHeadauthMiddlewareer, userRoutes);
 
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
