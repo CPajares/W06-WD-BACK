@@ -7,7 +7,7 @@ const morgan = require("morgan");
 const robotsRoute = require("./routes/robotRoutes");
 const userRoutes = require("./routes/userRoutes");
 const { notFoundErrorHandler, generalErrorHandler } = require("./errors");
-const loginUser = require("./controller/userController");
+
 const authHeadauthMiddlewareer = require("./middleware/authMiddleware");
 
 const app = express();
@@ -31,8 +31,8 @@ app.use((req, res, next) => {
 });
 
 /* app.use("/user", userRoutes); */
-app.use("/robots", robotsRoute);
-app.post("/login", authHeadauthMiddlewareer, userRoutes);
+app.use("/robots", cors(), robotsRoute);
+app.post("/login", cors(), authHeadauthMiddlewareer, userRoutes);
 
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
