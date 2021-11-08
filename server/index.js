@@ -5,7 +5,10 @@ const debug = require("debug")("robots:server");
 const chalk = require("chalk");
 const morgan = require("morgan");
 const robotsRoute = require("./routes/robotRoutes");
+const userRoute = require("./routes/userRoutes");
 const { notFoundErrorHandler, generalErrorHandler } = require("./errors");
+const loginUser = require("./controller/userController");
+const authHeadauthMiddlewareer = require("./middleware/authMiddleware");
 
 const app = express();
 app.use(cors());
@@ -27,7 +30,9 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/user", userRoute);
 app.use("/robots", robotsRoute);
+app.post("/login", authHeadauthMiddlewareer, loginUser);
 
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
