@@ -15,16 +15,18 @@ const loginUser = async (req, res, next) => {
       const authPassword = await bcrypt.compare(password, user.password);
 
       if (!authPassword) {
-        const error = new Error("Not authorized, wrong password");
+        const error = new Error("Not authorized");
         error.statusCode = 401;
         next(error);
       } else {
-        const token = jwt.sign({ password }, "secret");
+        const token = jwt.sign({ user, id: user.id }, process.env.JWT_SECRET);
         res.json({ token });
       }
     }
   } catch (error) {
-    console.log("error createusertokn", error.message);
+    error.message = "Incorrect token";
+    error.code = 401;
+    next(error);
   }
 };
 
