@@ -30,8 +30,8 @@ app.use((req, res, next) => {
 });
 
 /* app.use("/user", userRoutes); */
-app.use("/robots", robotsRoute);
-app.post("/login", authHeadauthMiddlewareer, userRoutes);
+app.use("/robots", authHeadauthMiddlewareer, robotsRoute);
+app.post("/login", userRoutes);
 
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
