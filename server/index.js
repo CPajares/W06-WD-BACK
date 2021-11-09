@@ -15,14 +15,18 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 
-const InitializeServer = (port) => {
-  const server = app.listen(port, () => {
-    debug(chalk.yellow(`Escuchando en el puerto ${port}`));
+const InitializeServer = (port) =>
+  new Promise((resolve, reject) => {
+    const server = app.listen(port, () => {
+      debug(chalk.yellow(`Escuchando en el puerto ${port}`));
+
+      resolve(server);
+    });
+
+    server.on("error", () => {
+      debug(chalk.red("Error al iniciar servidor."));
+    });
   });
-  server.on("error", () => {
-    debug(chalk.red("Error al iniciar servidor."));
-  });
-};
 
 app.use((req, res, next) => {
   debug(chalk.yellow("Arrancando motores"));
@@ -36,4 +40,4 @@ app.post("/login", userRoutes);
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
 
-module.exports = InitializeServer;
+module.exports = { app, InitializeServer };
