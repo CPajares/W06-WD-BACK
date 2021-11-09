@@ -16,6 +16,7 @@ const authHeadauthMiddlewareer = (req, res, next) => {
     } else {
       try {
         const authok = jwt.verify(token, process.env.JWT_SECRET);
+        console.log(token);
         req.userId = authok.id;
         next();
       } catch (error) {

@@ -11,8 +11,8 @@ const { notFoundErrorHandler, generalErrorHandler } = require("./errors");
 const authHeadauthMiddlewareer = require("./middleware/authMiddleware");
 
 const app = express();
+app.use(morgan("dev"));
 app.use(cors());
-app.use(express());
 
 const InitializeServer = (port) => {
   const server = app.listen(port, () => {
@@ -23,7 +23,6 @@ const InitializeServer = (port) => {
   });
 };
 
-app.use(morgan("dev"));
 app.use(express.json());
 app.use((req, res, next) => {
   debug(chalk.yellow("Arrancando motores"));
