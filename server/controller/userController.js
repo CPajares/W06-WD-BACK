@@ -16,6 +16,7 @@ const loginUser = async (req, res, next) => {
 
       if (!authPassword) {
         const error = new Error("Not authorized");
+        console.log("general pete");
         error.statusCode = 401;
         next(error);
       } else {

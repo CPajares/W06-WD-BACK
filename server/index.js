@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 });
 
 /* app.use("/user", userRoutes); */
-app.use("/robots", authHeadauthMiddlewareer, robotsRoute);
+app.use("/robots", robotsRoute);
 app.post("/login", userRoutes);
 
 app.use(notFoundErrorHandler);

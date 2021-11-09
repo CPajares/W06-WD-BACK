@@ -16,8 +16,9 @@ const authHeadauthMiddlewareer = async (req, res, next) => {
     } else {
       try {
         const authok = await jwt.verify(token, process.env.JWT_SECRET);
-        console.log(token);
+
         req.userId = authok.id;
+
         next();
       } catch (error) {
         error.message = "Incorrect token";
