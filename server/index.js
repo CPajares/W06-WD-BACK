@@ -13,6 +13,7 @@ const authHeadauthMiddlewareer = require("./middleware/authMiddleware");
 const app = express();
 app.use(morgan("dev"));
 app.use(cors());
+app.use(express.json());
 
 const InitializeServer = (port) => {
   const server = app.listen(port, () => {
@@ -23,15 +24,14 @@ const InitializeServer = (port) => {
   });
 };
 
-app.use(express.json());
 app.use((req, res, next) => {
   debug(chalk.yellow("Arrancando motores"));
   next();
 });
 
 /* app.use("/user", userRoutes); */
-app.use("/robots", cors(), robotsRoute);
-app.post("/login", cors(), authHeadauthMiddlewareer, userRoutes);
+app.use("/robots", robotsRoute);
+app.post("/login", authHeadauthMiddlewareer, userRoutes);
 
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);

@@ -4,13 +4,13 @@ const authHeadauthMiddlewareer = (req, res, next) => {
   console.log("dentro Midleware");
   const authHeader = req.header("Authorization");
   if (!authHeader) {
-    const error = new Error("Not autorized");
+    const error = new Error("Not autorized header");
     error.code = 401;
     next(error);
   } else {
     const token = authHeader.split(" ")[1];
     if (!token) {
-      const error = new Error("Not autorized");
+      const error = new Error("Not autorized token");
       error.code = 401;
       next(error);
     } else {
