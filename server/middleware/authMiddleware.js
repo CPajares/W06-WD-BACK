@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const authHeadauthMiddlewareer = (req, res, next) => {
+const authHeadauthMiddlewareer = async (req, res, next) => {
   console.log("dentro Midleware");
   const authHeader = req.header("Authorization");
   if (!authHeader) {
@@ -15,7 +15,7 @@ const authHeadauthMiddlewareer = (req, res, next) => {
       next(error);
     } else {
       try {
-        const authok = jwt.verify(token, process.env.JWT_SECRET);
+        const authok = await jwt.verify(token, process.env.JWT_SECRET);
         console.log(token);
         req.userId = authok.id;
         next();
