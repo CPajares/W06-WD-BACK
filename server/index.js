@@ -19,7 +19,7 @@ const InitializeServer = (port) =>
   new Promise((resolve, reject) => {
     const server = app.listen(port, () => {
       debug(chalk.yellow(`Escuchando en el puerto ${port}`));
-      console.log("hello");
+
       resolve(server);
     });
 
@@ -40,4 +40,4 @@ app.post("/login", userRoutes);
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
 
-module.exports = InitializeServer;
+module.exports = { app, InitializeServer };
