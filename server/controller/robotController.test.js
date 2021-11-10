@@ -252,7 +252,7 @@ describe("Given a updateRobotById function", () => {
       await updateRobotById(req, res, next);
 
       expect(Robot.findByIdAndUpdate).toHaveBeenCalled();
-      expect(res.json).toHaveBeenCalledWith(newRobot);
+      expect(res.json).toHaveBeenCalledWith(robot);
     });
   });
 

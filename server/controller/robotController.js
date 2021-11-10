@@ -38,10 +38,16 @@ const createRobot = async (req, res, next) => {
 const updateRobotById = async (req, res, next) => {
   try {
     const { _id } = req.body;
-    const newRobot = await Robot.findByIdAndUpdate(_id, req.body, {
-      runValidators: true,
-    });
-    res.json(newRobot);
+
+    const newRobot = await Robot.findByIdAndUpdate(_id, req.body);
+
+    if (newRobot) {
+      res.json(req.body);
+    } else {
+      const error = new Error("Not found");
+      error.code = 404;
+      next(error);
+    }
   } catch (error) {
     error.message = "Objeto no válido, espabila!";
     error.code = 400;
