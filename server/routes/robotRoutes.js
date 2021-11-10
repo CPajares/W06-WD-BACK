@@ -6,7 +6,7 @@ const {
   updateRobotById,
   deleteRobotById,
 } = require("../controller/robotController");
-const checkToken = require("../middleware/robotMiddleware");
+const authHeadauthMiddlewareer = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -14,10 +14,10 @@ router.get("/", getRobots);
 
 router.get("/:idRobot", getRobotbyId);
 
-router.post("/create", checkToken, createRobot);
+router.post("/create", authHeadauthMiddlewareer, createRobot);
 
-router.put("/update", checkToken, updateRobotById);
+router.put("/update", authHeadauthMiddlewareer, updateRobotById);
 
-router.delete("/delete/:idRobot", checkToken, deleteRobotById);
+router.delete("/delete/:idRobot", authHeadauthMiddlewareer, deleteRobotById);
 
 module.exports = router;

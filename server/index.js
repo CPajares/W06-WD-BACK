@@ -8,14 +8,12 @@ const robotsRoute = require("./routes/robotRoutes");
 const userRoutes = require("./routes/userRoutes");
 const { notFoundErrorHandler, generalErrorHandler } = require("./errors");
 
-const authHeadauthMiddlewareer = require("./middleware/authMiddleware");
-
 const app = express();
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 
-const InitializeServer = (port) =>
+const initializeServer = (port) =>
   new Promise((resolve, reject) => {
     const server = app.listen(port, () => {
       debug(chalk.yellow(`Escuchando en el puerto ${port}`));
@@ -40,4 +38,4 @@ app.post("/login", userRoutes);
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
 
-module.exports = { app, InitializeServer };
+module.exports = { app, initializeServer };
